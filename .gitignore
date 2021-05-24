@@ -1,0 +1,9 @@
+node_modules
+
+# Solidity-coverage output
+coverage.json
+coverage
+
+# Hardhat compilation output
+cache
+artifacts
