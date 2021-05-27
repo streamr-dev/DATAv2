@@ -17,14 +17,14 @@
 
 Some of the following features are inherited from [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/v4.0.0/contracts):
 
-| Feature | Associated function | File where the function is |
-|---------|---------------------|-------------------|
-| [ERC-677](https://github.com/ethereum/EIPs/issues/677)  | transferAndCall     | contracts/DATAv2.sol |
-| [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612)  | permit | @openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol |
-| Minting | grantRole, revokeRole | @openzeppelin/contracts/access/AccessControl.sol |
-| Minting | mint | contracts/DATAv2.sol |
-| Initial minting | constructor | contracts/DATAv2.sol |
-| Burning | burn, burnFrom | @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol |
+| Feature                                                   | Associated function   | File where the function is                                            |
+|-----------------------------------------------------------|-----------------------|-----------------------------------------------------------------------|
+| [ERC-677](https://github.com/ethereum/EIPs/issues/677)    | transferAndCall       | contracts/DATAv2.sol                                                  |
+| [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612)       | permit                | @openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol  |
+| Minting           | grantRole, revokeRole | @openzeppelin/contracts/access/AccessControl.sol                  |
+| Minting           | mint                  | contracts/DATAv2.sol                                              |
+| Initial minting   | constructor           | contracts/DATAv2.sol                                              |
+| Burning           | burn, burnFrom        | @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol  |
 
 ## Migration process
 
