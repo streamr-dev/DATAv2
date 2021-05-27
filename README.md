@@ -15,7 +15,7 @@
 
 ## DATAv2 features
 
-The following features are inherited from [OpenZeppelin contracts]():
+Some of the following features are inherited from [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/v4.0.0/contracts):
 
 | Feature | Associated function | File where the function is |
 |---------|---------------------|-------------------|
