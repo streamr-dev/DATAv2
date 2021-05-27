@@ -419,7 +419,7 @@ contract ReleasableToken is ERC20, Ownable {
  *
  * Maintained here until merged to mainline zeppelin-solidity.
  *
- */
+
 library SafeMathLib {
 
   function times(uint a, uint b) returns (uint) {
@@ -443,9 +443,10 @@ library SafeMathLib {
     if (!assertion) throw;
   }
 }
+ */
 
-
-
+// above SafeMathLib was used in the below MintableToken. Removed it and replaced plus with safeAdd.
+// this avoided "library"
 /**
  * A token that can increase its supply by another contract.
  *
@@ -454,8 +455,6 @@ library SafeMathLib {
  *
  */
 contract MintableToken is StandardToken, Ownable {
-
-  using SafeMathLib for uint;
 
   bool public mintingFinished = false;
 
@@ -470,8 +469,8 @@ contract MintableToken is StandardToken, Ownable {
    * Only callably by a crowdsale contract (mint agent).
    */
   function mint(address receiver, uint amount) onlyMintAgent canMint public {
-    totalSupply = totalSupply.plus(amount);
-    balances[receiver] = balances[receiver].plus(amount);
+    totalSupply = safeAdd(totalSupply, amount);
+    balances[receiver] = safeAdd(balances[receiver], amount);
 
     // This will make the mint transaction apper in EtherScan.io
     // We can remove this after there is a standardized minting event
