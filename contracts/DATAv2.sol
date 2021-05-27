@@ -15,7 +15,7 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
 	uint constant INITIAL_SUPPLY = 987154514 ether;
 
 	// adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol
-	bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+	bytes32 constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     constructor(
 		address migrationContract
