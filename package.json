@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The second iteration of the DATA token",
   "scripts": {
+    "lint": "npx eslint test",
     "test": "npx hardhat test",
     "build": "npx hardhat compile",
     "cov": "npx hardhat coverage"
@@ -16,6 +17,7 @@
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "chai": "^4.3.4",
+    "eslint": "^7.27.0",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.1.0",
     "hardhat": "^2.1.2",
