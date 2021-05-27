@@ -54,6 +54,9 @@ describe("DataTokenMigrator", () => {
         expect(await oldToken.getUpgradeState()).to.equal(4) // Upgrading
         expect(newTokensAfter.sub(newTokensBefore).toString()).to.equal(parseEther("321"))
         expect(oldTokensBefore.sub(oldTokensAfter).toString()).to.equal(parseEther("321"))
+
+        // this invariant should hold at all times
+        expect(await oldToken.totalSupply()).to.equal(await newToken.balanceOf(migrator.address))
     })
 
     it("can't be called by the others than the old token contract", async () => {
