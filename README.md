@@ -40,3 +40,14 @@ Result:
 * DATAv2 tokens are transferred from the DataTokenMigrator to the holders
 
 At all times, tokens left in the DataTokenMigrator are the unmigrated old DATA tokens, and they should be equal in number to the tokenSupply of the old DATA contract
+
+## DATAv2 contract anatomy
+
+[OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/v4.0.0/contracts) were used where available to implement the features listed in the above table.
+
+Explanations of the origins and intents of all code found in DATAv2.sol:
+| Lines   | Explanation                                                 |
+|---------|-------------------------------------------------------------|
+| 1...18  | OpenZeppelin and interface imports, DATAv2 token properties |
+| 20...47 | Adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol to implement the minting feature. The AccessControl.sol is a bit of a can of worms when it comes to state-space: the "role admin" can set up any constellation of roles and grant those roles and their administration to anyone; its implementation is quite elegant though, so it didn't feel very significantly worse than a "brute" `mapping (address => bool) isMinter` type of implementation, especially since it's all library code. |
+| 49...75 | Adapted from LINK token to implement the ERC-677 token transfer hook. Recipient smart contracts can now react to DATAv2 token transfer which makes approve+transferFrom two-transaction flow avoidable if not entirely redundant. Decided to go for the simply ERC-677 instead of the ERC-777 because of some misfeatures on ERC-777 (defaultOperators, higher plain transfer gas price) as well as uncertain adoption at this stage. |
