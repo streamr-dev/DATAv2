@@ -29,11 +29,12 @@ Some of the following features are inherited from [OpenZeppelin contracts](https
 ## Migration process
 
 1. We deploy the DataTokenMigrator contract
-1. We deploy the DATAv2 contract
+2. We deploy the DATAv2 contract
     - Pass DataTokenMigrator as argument
     - Will mint the old DATA token initial supply of DATAv2 to the DataTokenMigrator
-1. We call `setTokens("0x0cf0ee63788a0849fe5297f3407f701e122cc023", DATAv2.address)` in the DataTokenMigrator
-1. DATA token holders call `upgrade(amountWei)` in the old DATA contract
+3. We call `setTokens("0x0cf0ee63788a0849fe5297f3407f701e122cc023", DATAv2.address)` in the DataTokenMigrator
+4. We call `setUpgradeAgent(migrator.address)` in the old DATA contract to start the upgrade
+5. DATA token holders call `upgrade(amountWei)` in the old DATA contract
 
 Result:
 * Old DATA tokens are burned

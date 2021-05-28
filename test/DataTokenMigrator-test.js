@@ -25,23 +25,24 @@ describe("DataTokenMigrator", () => {
         // WaitingForAgent is also the current pre-migration state of the DATA token in mainnet,
         // verify that getUpgradeState=2 at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
 
-        // Set the migrator as the upgrade agent in the DATA token contract
+        // Migration process step 1: deploy migrator contract that distributes tokens to old DATA holders
         const DataTokenMigrator = await ethers.getContractFactory("DataTokenMigrator")
         const migrator = await DataTokenMigrator.deploy()
         await migrator.deployed()
-        await expect(oldToken.setUpgradeAgent(migrator.address)).to.emit(oldToken, "UpgradeAgentSet")
-        expect(await oldToken.getUpgradeState()).to.equal(3) // ReadyToUpgrade
 
-        // Upgrading still fails because the new token isn't set
-        await expect(oldToken.connect(hodler).upgrade(parseEther("1"))).to.be.reverted
-
-        // Deploy the new token that moves the whole old supply amount to the migrator
+        // Step 2: deploy the new token that moves the whole old supply amount to the migrator
         const DATAv2 = await ethers.getContractFactory("DATAv2")
         const newToken = await DATAv2.deploy(migrator.address)
         await newToken.deployed()
+
+        // Step 3
         await migrator.setTokens(oldToken.address, newToken.address)
 
-        // Hodler upgrades some tokens
+        // Step 4: Set the migrator as the upgrade agent in the DATA token contract to start the upgrade
+        await expect(oldToken.setUpgradeAgent(migrator.address)).to.emit(oldToken, "UpgradeAgentSet")
+        expect(await oldToken.getUpgradeState()).to.equal(3) // ReadyToUpgrade
+
+        // Step 5: Hodler upgrades some tokens
         const oldTokensBefore = await oldToken.balanceOf(hodler.address)
         const newTokensBefore = await newToken.balanceOf(hodler.address)
         await expect(oldToken.connect(hodler).upgrade(parseEther("1"))).to.emit(oldToken, "Upgrade")
