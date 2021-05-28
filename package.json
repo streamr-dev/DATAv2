@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "The second iteration of the DATA token",
   "scripts": {
-    "lint": "npx eslint test",
-    "test": "npx hardhat test",
-    "build": "npx hardhat compile",
-    "cov": "npx hardhat coverage"
+    "lint": "eslint test",
+    "test": "hardhat test",
+    "build": "hardhat compile",
+    "cov": "hardhat coverage"
   },
   "author": "Streamr Network AG",
   "license": "ISC",
