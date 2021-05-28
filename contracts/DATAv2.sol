@@ -8,7 +8,7 @@ import "./IERC677.sol";
 import "./IERC677Receiver.sol";
 
 contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
-	string constant NAME = "Streamr DATA v2";
+	string constant NAME = "Streamr";
 	string constant SYMBOL = "DATA";
 
 	// ------------------------------------------------------------------------
