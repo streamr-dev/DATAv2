@@ -1,11 +1,12 @@
 const { parseEther } = require("@ethersproject/units")
+const { id } = require("@ethersproject/hash")
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
 describe("DataTokenMigrator", () => {
     it("hands out the new tokens in the upgrade", async function() {
         this.timeout(100000)
-        const [signer, hodler] = await ethers.getSigners()
+        const [signer, hodler, minter] = await ethers.getSigners()
 
         // Current DATA token supply
         // See totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
@@ -25,18 +26,19 @@ describe("DataTokenMigrator", () => {
         // WaitingForAgent is also the current pre-migration state of the DATA token in mainnet,
         // verify that getUpgradeState=2 at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
 
-        // Migration process step 1: deploy migrator contract that distributes tokens to old DATA holders
+        // Migration process step 1: Deploy the contracts
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const newToken = await DATAv2.deploy()
+        await newToken.deployed()
         const DataTokenMigrator = await ethers.getContractFactory("DataTokenMigrator")
-        const migrator = await DataTokenMigrator.deploy()
+        const migrator = await DataTokenMigrator.deploy(oldToken.address, newToken.address)
         await migrator.deployed()
 
-        // Step 2: deploy the new token that moves the whole old supply amount to the migrator
-        const DATAv2 = await ethers.getContractFactory("DATAv2")
-        const newToken = await DATAv2.deploy(migrator.address)
-        await newToken.deployed()
+        // Step 2: Create/enable the minter
+        await expect(newToken.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(newToken, "RoleGranted")
 
-        // Step 3
-        await migrator.setTokens(oldToken.address, newToken.address)
+        // Step 3: Mint the tokens belonging to old DATA holders into the DataTokenMigrator contract
+        await expect(newToken.connect(minter).mint(migrator.address, oldSupply)).to.emit(newToken, "Transfer(address,address,uint256)")
 
         // Step 4: Set the migrator as the upgrade agent in the DATA token contract to start the upgrade
         await expect(oldToken.setUpgradeAgent(migrator.address)).to.emit(oldToken, "UpgradeAgentSet")
@@ -63,8 +65,11 @@ describe("DataTokenMigrator", () => {
     it("can't be called by the others than the old token contract", async () => {
         const [signer] = await ethers.getSigners()
 
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const newToken = await DATAv2.deploy()
+        await newToken.deployed()
         const DataTokenMigrator = await ethers.getContractFactory("DataTokenMigrator")
-        const migrator = await DataTokenMigrator.deploy()
+        const migrator = await DataTokenMigrator.deploy(newToken.address, newToken.address)
         await migrator.deployed()
 
         await expect(migrator.upgradeFrom(signer.address, parseEther("1"))).to.be.revertedWith("Call not permitted, UpgradableToken only")

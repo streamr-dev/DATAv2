@@ -23,16 +23,13 @@ Some of the following features are inherited from [OpenZeppelin contracts](https
 | [EIP-2612](https://eips.ethereum.org/EIPS/eip-2612)       | permit                | @openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol  |
 | Minting           | grantRole, revokeRole | @openzeppelin/contracts/access/AccessControl.sol                  |
 | Minting           | mint                  | contracts/DATAv2.sol                                              |
-| Initial minting   | constructor           | contracts/DATAv2.sol                                              |
 | Burning           | burn, burnFrom        | @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol  |
 
 ## Migration process
 
-1. We deploy the DataTokenMigrator contract
-2. We deploy the DATAv2 contract
-    - Pass DataTokenMigrator as argument
-    - Will mint the old DATA token initial supply of DATAv2 to the DataTokenMigrator
-3. We call `setTokens("0x0cf0ee63788a0849fe5297f3407f701e122cc023", DATAv2.address)` in the DataTokenMigrator
+1. We deploy the DATAv2 and DataTokenMigrator contracts
+2. We call `grantRole(id('MINTER_ROLE'), minter.address)` on the DATAv2 contract
+3. Minter calls `mint(migrator.address, tokenSupply)` on the DATAv2 contract to mint the tokens belonging to old DATA holders into the DataTokenMigrator contract
 4. We call `setUpgradeAgent(migrator.address)` in the old DATA contract to start the upgrade
 5. DATA token holders call `upgrade(amountWei)` in the old DATA contract
 
@@ -40,7 +37,7 @@ Result:
 * Old DATA tokens are burned
 * DATAv2 tokens are transferred from the DataTokenMigrator to the holders
 
-At all times, tokens left in the DataTokenMigrator are the unmigrated old DATA tokens, and they should be equal in number to the tokenSupply of the old DATA contract
+At all times, DATAv2 tokens left in the DataTokenMigrator are the unmigrated DATA tokens, and they should be equal in number to the tokenSupply of the old DATA contract
 
 ## DATAv2 contract anatomy
 

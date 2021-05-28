@@ -12,21 +12,12 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
 	string constant SYMBOL = "DATA";
 
 	// ------------------------------------------------------------------------
-	// Immediately mint the initial supply belonging to the old DATA token holders
-	// This makes the DATAv2.totalSupply() correctly reflect the amount of DATA tokens that can be migrated from the old contract
-	// See totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
-	uint constant INITIAL_SUPPLY = 987154514 ether;
-
-	// ------------------------------------------------------------------------
 	// adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol
 	bytes32 constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor(
-		address migrationContract
-	) ERC20(NAME, SYMBOL) ERC20Permit(NAME) {
-		// make contract deployer the role admin that can later grant minter role
+    constructor() ERC20(NAME, SYMBOL) ERC20Permit(NAME) {
+		// make contract deployer the role admin that can later grant the minter role
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _mint(migrationContract, INITIAL_SUPPLY);
     }
 
     /**

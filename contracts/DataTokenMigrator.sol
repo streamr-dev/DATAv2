@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract DataTokenMigrator is Ownable { // is UpgradeAgent, see Crowdsale.sol
+contract DataTokenMigrator { // is UpgradeAgent, see Crowdsale.sol
 
     IERC20 public oldToken;
     IERC20 public newToken;
 
-    function setTokens(IERC20 _oldToken, IERC20 _newToken) public onlyOwner {
+    constructor(IERC20 _oldToken, IERC20 _newToken) {
         oldToken = _oldToken;
         newToken = _newToken;
     }

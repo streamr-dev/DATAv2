@@ -5,15 +5,18 @@ const { ethers } = require("hardhat")
 
 describe("DATAv2", () => {
     it("transferAndCall triggers ERC677 callback", async () => {
-        const [signer] = await ethers.getSigners()
+        const [signer, minter] = await ethers.getSigners()
 
         const MockRecipient = await ethers.getContractFactory("MockRecipient")
         const recipient = await MockRecipient.deploy()
         await recipient.deployed()
 
-        const TestToken = await ethers.getContractFactory("DATAv2")
-        const token = await TestToken.deploy(signer.address) // mint tokens to signer
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const token = await DATAv2.deploy()
         await token.deployed()
+
+        await expect(token.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(token, "RoleGranted")
+        await expect(token.connect(minter).mint(signer.address, parseEther("1"))).to.emit(token, "Transfer(address,address,uint256)")
 
         const before = await recipient.txCount()
         await token.transferAndCall(recipient.address, parseEther("1"), "0x6c6f6c")
@@ -23,12 +26,15 @@ describe("DATAv2", () => {
     })
 
     it("transferAndCall just does normal transfer for non-contract accounts", async () => {
-        const [signer] = await ethers.getSigners()
+        const [signer, minter] = await ethers.getSigners()
         const targetAddress = "0x0000000000000000000000000000000000000001"
 
-        const TestToken = await ethers.getContractFactory("DATAv2")
-        const token = await TestToken.deploy(signer.address)
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const token = await DATAv2.deploy()
         await token.deployed()
+
+        await expect(token.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(token, "RoleGranted")
+        await expect(token.connect(minter).mint(signer.address, parseEther("1"))).to.emit(token, "Transfer(address,address,uint256)")
 
         const balanceBefore = await token.balanceOf(targetAddress)
         await token.transferAndCall(targetAddress, parseEther("1"), "0x6c6f6c")
@@ -41,8 +47,8 @@ describe("DATAv2", () => {
         const [signer] = await ethers.getSigners()
         const targetAddress = "0x0000000000000000000000000000000000000002"
 
-        const TestToken = await ethers.getContractFactory("DATAv2")
-        const token = await TestToken.deploy("0x0000000000000000000000000000000000000666")
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const token = await DATAv2.deploy()
         await token.deployed()
 
         await expect(token.mint(targetAddress, "1000")).to.be.revertedWith("Sender is not minter")
