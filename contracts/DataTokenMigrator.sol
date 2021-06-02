@@ -18,8 +18,13 @@ contract DataTokenMigrator { // is UpgradeAgent, see Crowdsale.sol
      * See https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#code
      */
 
-    // See totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
-    uint256 public originalSupply = 987154514 ether;
+    /**
+     * Must match totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
+     *   before the CrowdSaleToken upgrade can begin
+     */
+    function originalSupply() public view returns (uint) {
+        return newToken.balanceOf(address(this));   // throws if newToken not set
+    }
 
     /** UpgradeAgent Interface marker */
     function isUpgradeAgent() public pure returns (bool) {
@@ -35,6 +40,6 @@ contract DataTokenMigrator { // is UpgradeAgent, see Crowdsale.sol
             msg.sender == address(oldToken),
             "Call not permitted, UpgradableToken only"
         );
-        newToken.transfer(_from, _value);
+        newToken.transfer(_from, _value);   // throws if newToken not set
     }
 }

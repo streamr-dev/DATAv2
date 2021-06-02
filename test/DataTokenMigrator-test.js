@@ -4,14 +4,12 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
 describe("DataTokenMigrator", () => {
-    it("hands out the new tokens in the upgrade", async function() {
-        this.timeout(100000)
-        const [signer, hodler, minter] = await ethers.getSigners()
 
-        // Current DATA token supply
-        // See totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
-        const oldSupply = parseEther("987154514")
+    // Current DATA token supply
+    // See totalSupply at https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract
+    const oldSupply = parseEther("987154514")
 
+    async function executeUntilStep3(signer, hodler, minter) {
         // Set up the old token into a valid upgrade state by simulating the crowdsale: hodler gets all, then token is released
         const CrowdsaleToken = await ethers.getContractFactory("CrowdsaleToken")
         const oldToken = await CrowdsaleToken.deploy("Streamr DATAcoin", "DATA", 0, 18, true)
@@ -40,6 +38,18 @@ describe("DataTokenMigrator", () => {
         // Step 3: Mint the tokens belonging to old DATA holders into the DataTokenMigrator contract
         await expect(newToken.connect(minter).mint(migrator.address, oldSupply)).to.emit(newToken, "Transfer(address,address,uint256)")
 
+        // this invariant should hold at all times after step 3
+        expect(await oldToken.totalSupply()).to.equal(await newToken.balanceOf(migrator.address))
+
+        return { oldToken, newToken, migrator }
+    }
+
+    it("hands out the new tokens in the upgrade", async function() {
+        this.timeout(100000)
+        const [signer, hodler, minter] = await ethers.getSigners()
+
+        const { oldToken, newToken, migrator } = await executeUntilStep3(signer, hodler, minter)
+
         // Step 4: Set the migrator as the upgrade agent in the DATA token contract to start the upgrade
         await expect(oldToken.setUpgradeAgent(migrator.address)).to.emit(oldToken, "UpgradeAgentSet")
         expect(await oldToken.getUpgradeState()).to.equal(3) // ReadyToUpgrade
@@ -58,20 +68,34 @@ describe("DataTokenMigrator", () => {
         expect(newTokensAfter.sub(newTokensBefore).toString()).to.equal(parseEther("321"))
         expect(oldTokensBefore.sub(oldTokensAfter).toString()).to.equal(parseEther("321"))
 
-        // this invariant should hold at all times
+        // this invariant should hold at all times even after some upgrades
         expect(await oldToken.totalSupply()).to.equal(await newToken.balanceOf(migrator.address))
     })
 
-    it("can't be called by the others than the old token contract", async () => {
-        const [signer] = await ethers.getSigners()
+    it("can't be called by the others than the old token contract", async function() {
+        this.timeout(100000)
+        const [signer, hodler, minter] = await ethers.getSigners()
 
-        const DATAv2 = await ethers.getContractFactory("DATAv2")
-        const newToken = await DATAv2.deploy()
-        await newToken.deployed()
-        const DataTokenMigrator = await ethers.getContractFactory("DataTokenMigrator")
-        const migrator = await DataTokenMigrator.deploy(newToken.address, newToken.address)
-        await migrator.deployed()
+        const { oldToken, migrator } = await executeUntilStep3(signer, hodler, minter)
 
+        // Step 4: Set the migrator as the upgrade agent in the DATA token contract to start the upgrade
+        await expect(oldToken.setUpgradeAgent(migrator.address)).to.emit(oldToken, "UpgradeAgentSet")
+
+        // Broken step 5: Direct call to migrator
         await expect(migrator.upgradeFrom(signer.address, parseEther("1"))).to.be.revertedWith("Call not permitted, UpgradableToken only")
+    })
+
+    it("fails to upgrade if the originalSupply is wrong", async function() {
+        this.timeout(100000)
+        const [signer, hodler, minter] = await ethers.getSigners()
+
+        const { newToken, oldToken, migrator } = await executeUntilStep3(signer, hodler, minter)
+
+        // Broken step 3: Extra tokens minted for some reason
+        await expect(newToken.connect(minter).mint(migrator.address, parseEther("1"))).to.emit(newToken, "Transfer(address,address,uint256)")
+
+        // Broken step 4: Starting the upgrade fails
+        await expect(oldToken.setUpgradeAgent(migrator.address)).to.be.reverted
+        expect(await oldToken.getUpgradeState()).to.equal(2) // still WaitingForAgent
     })
 })
