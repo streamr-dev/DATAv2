@@ -51,7 +51,7 @@ describe("DATAv2", () => {
         const token = await DATAv2.deploy()
         await token.deployed()
 
-        await expect(token.mint(targetAddress, "1000")).to.be.revertedWith("Sender is not minter")
+        await expect(token.mint(targetAddress, "1000")).to.be.revertedWith("Transaction signer is not a minter")
         await expect(token.grantRole(id("MINTER_ROLE"), signer.address)).to.emit(token, "RoleGranted")
 
         const balanceBefore = await token.balanceOf(targetAddress)
@@ -59,7 +59,7 @@ describe("DATAv2", () => {
         const balanceAfter = await token.balanceOf(targetAddress)
 
         await expect(token.revokeRole(id("MINTER_ROLE"), signer.address)).to.emit(token, "RoleRevoked")
-        await expect(token.mint(targetAddress, "1000")).to.be.revertedWith("Sender is not minter")
+        await expect(token.mint(targetAddress, "1000")).to.be.revertedWith("Transaction signer is not a minter")
 
         expect(balanceAfter.sub(balanceBefore).toString()).to.equal("1000")
     })

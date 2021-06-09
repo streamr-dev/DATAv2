@@ -13,11 +13,17 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
 
     // ------------------------------------------------------------------------
     // adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol
-    bytes32 constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 constant public MINTER_ROLE = keccak256("MINTER_ROLE");
 
     constructor() ERC20(NAME, SYMBOL) ERC20Permit(NAME) {
         // make contract deployer the role admin that can later grant the minter role
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
+    }
+
+    function isMinter(
+        address minter
+    ) public view returns (bool) {
+        return hasRole(MINTER_ROLE, minter);
     }
 
     /**
@@ -33,7 +39,7 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
         address to,
         uint256 amount
     ) public {
-        require(hasRole(MINTER_ROLE, _msgSender()), "Sender is not minter");
+        require(isMinter(_msgSender()), "Transaction signer is not a minter");
         _mint(to, amount);
     }
 
