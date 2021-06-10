@@ -8,14 +8,16 @@ import "./IERC677.sol";
 import "./IERC677Receiver.sol";
 
 contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
-    string constant NAME = "Streamr";
-    string constant SYMBOL = "DATA";
+    string private _name = "Streamr";
+    string private _symbol = "DATA";
+
+    event UpdatedTokenInformation(string newName, string newSymbol);
 
     // ------------------------------------------------------------------------
     // adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol
     bytes32 constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() ERC20(NAME, SYMBOL) ERC20Permit(NAME) {
+    constructor() ERC20("", "") ERC20Permit(_name) {
         // make contract deployer the role admin that can later grant the minter role
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
@@ -63,5 +65,26 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
             receiver.onTokenTransfer(_msgSender(), _value, _data);
         }
         return true;
+    }
+
+    function setTokenInformation(string calldata newName, string calldata newSymbol) public {
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Transaction signer is not an admin");
+        _name = newName;
+        _symbol = newSymbol;
+        emit UpdatedTokenInformation(_name, _symbol);
+    }
+
+    /**
+     * @dev Returns the name of the token.
+     */
+    function name() public view override returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev Returns the symbol of the token, usually a shorter version of the name.
+     */
+    function symbol() public view override returns (string memory) {
+        return _symbol;
     }
 }
