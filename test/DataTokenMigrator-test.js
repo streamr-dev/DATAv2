@@ -35,7 +35,7 @@ describe("DataTokenMigrator", () => {
         await migrator.deployed()
 
         // Step 2: Create/enable the minter
-        await expect(newToken.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(newToken, "RoleGranted")
+        await expect(newToken.addMinter(minter.address)).to.emit(newToken, "MinterAdded")
 
         // Step 3: Mint the tokens belonging to old DATA holders into the DataTokenMigrator contract
         await expect(newToken.connect(minter).mint(migrator.address, oldSupply)).to.emit(newToken, "Transfer(address,address,uint256)")
