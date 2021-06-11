@@ -124,6 +124,71 @@ contract DATAv2 {
         emit Transfer(address(0), account, amount);
     }
 
+    /**
+     * @dev Moves tokens `amount` from `sender` to `recipient`.
+     *
+     * Emits a {Transfer} event.
+     *
+     * Requirements:
+     *
+     * - `sender` cannot be the zero address.
+     * - `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `amount`.
+     */
+    function _transfer(address sender, address recipient, uint256 amount) private {
+        require(sender != address(0), "Transfer from the zero address");
+        require(recipient != address(0), "Transfer to the zero address");
+
+        uint256 senderBalance = balanceOf[sender];
+        require(senderBalance >= amount, "Transfer amount exceeds balance");
+        balanceOf[sender] = senderBalance - amount;
+        balanceOf[recipient] += amount;
+
+        emit Transfer(sender, recipient, amount);
+    }
+
+    /**
+     * @dev Destroys `amount` tokens from `account`, reducing the total supply.
+     *
+     * Emits a {Transfer} event with `to` set to the zero address.
+     *
+     * Requirements:
+     *
+     * - `account` cannot be the zero address.
+     * - `account` must have at least `amount` tokens.
+     */
+    function _burn(address account, uint256 amount) internal {
+        require(account != address(0), "burn from the zero address");
+
+        uint256 accountBalance = balanceOf[account];
+        require(accountBalance >= amount, "burn amount exceeds balance");
+        balanceOf[account] = accountBalance - amount;
+        totalSupply -= amount;
+
+        emit Transfer(account, address(0), amount);
+    }
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the `owner` s tokens.
+     *
+     * This internal function is equivalent to `approve`, and can be used to
+     * e.g. set automatic allowances for certain subsystems, etc.
+     *
+     * Emits an {Approval} event.
+     *
+     * Requirements:
+     *
+     * - `owner` cannot be the zero address.
+     * - `spender` cannot be the zero address.
+     */
+    function approve(address owner, address spender, uint256 amount) internal {
+        require(owner != address(0), "Approve from the zero address");
+        require(spender != address(0), "Approve to the zero address");
+
+        allowance[owner][spender] = amount;
+        emit Approval(owner, spender, amount);
+    }
+
     // ------------------------------------------------------------------------
     // adapted from LINK token, see https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code
     // implements https://github.com/ethereum/EIPs/issues/677
@@ -261,7 +326,7 @@ contract DATAv2 {
      */
     function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
         uint256 currentAllowance = allowance[msg.sender][spender];
-        require(currentAllowance >= subtractedValue, "decreased allowance below zero");
+        require(currentAllowance >= subtractedValue, "Decreased allowance below zero");
         approve(msg.sender, spender, currentAllowance - subtractedValue);
 
         return true;
@@ -281,47 +346,12 @@ contract DATAv2 {
     }
 
     /**
-     * @dev Moves tokens `amount` from `sender` to `recipient`.
+     * @dev Destroys `amount` tokens from the caller.
      *
-     * Emits a {Transfer} event.
-     *
-     * Requirements:
-     *
-     * - `sender` cannot be the zero address.
-     * - `recipient` cannot be the zero address.
-     * - `sender` must have a balance of at least `amount`.
+     * See {ERC20-_burn}.
      */
-    function _transfer(address sender, address recipient, uint256 amount) private {
-        require(sender != address(0), "Transfer from the zero address");
-        require(recipient != address(0), "Transfer to the zero address");
-
-        uint256 senderBalance = balanceOf[sender];
-        require(senderBalance >= amount, "Transfer amount exceeds balance");
-        balanceOf[sender] = senderBalance - amount;
-        balanceOf[recipient] += amount;
-
-        emit Transfer(sender, recipient, amount);
-    }
-
-    /**
-     * @dev Destroys `amount` tokens from `account`, reducing the total supply.
-     *
-     * Emits a {Transfer} event with `to` set to the zero address.
-     *
-     * Requirements:
-     *
-     * - `account` cannot be the zero address.
-     * - `account` must have at least `amount` tokens.
-     */
-    function burn(address account, uint256 amount) public {
-        require(account != address(0), "burn from the zero address");
-
-        uint256 accountBalance = balanceOf[account];
-        require(accountBalance >= amount, "burn amount exceeds balance");
-        balanceOf[account] = accountBalance - amount;
-        totalSupply -= amount;
-
-        emit Transfer(account, address(0), amount);
+    function burn(uint256 amount) public {
+        _burn(msg.sender, amount);
     }
 
     /**
@@ -338,27 +368,6 @@ contract DATAv2 {
         uint256 currentAllowance = allowance[account][msg.sender];
         require(currentAllowance >= amount, "Burn amount exceeds allowance");
         approve(account, msg.sender, currentAllowance - amount);
-        burn(account, amount);
-    }
-
-    /**
-     * @dev Sets `amount` as the allowance of `spender` over the `owner` s tokens.
-     *
-     * This internal function is equivalent to `approve`, and can be used to
-     * e.g. set automatic allowances for certain subsystems, etc.
-     *
-     * Emits an {Approval} event.
-     *
-     * Requirements:
-     *
-     * - `owner` cannot be the zero address.
-     * - `spender` cannot be the zero address.
-     */
-    function approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "Approve from the zero address");
-        require(spender != address(0), "Approve to the zero address");
-
-        allowance[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
+        _burn(account, amount);
     }
 }
