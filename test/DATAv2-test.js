@@ -63,4 +63,18 @@ describe("DATAv2", () => {
 
         expect(balanceAfter.sub(balanceBefore).toString()).to.equal("1000")
     })
+
+    it("name and symbol can be changed by admin", async () => {
+        const [, notAdmin] = await ethers.getSigners()
+
+        const DATAv2 = await ethers.getContractFactory("DATAv2")
+        const token = await DATAv2.deploy()
+        await token.deployed()
+
+        await expect(token.connect(notAdmin).setTokenInformation("Test token", "TEST")).to.be.revertedWith("Transaction signer is not an admin")
+        await expect(token.setTokenInformation("Test token", "TEST")).to.emit(token, "UpdatedTokenInformation")
+
+        expect(await token.name()).to.equal("Test token")
+        expect(await token.symbol()).to.equal("TEST")
+    })
 })
