@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity 0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -30,7 +30,7 @@ contract DataTokenMigrator { // is UpgradeAgent, see Crowdsale.sol
      * @param _from token holder that called CrowdsaleToken.upgrade(_value)
      * @param _value amount of tokens to upgrade, checked by the CrowdsaleToken
      */
-    function upgradeFrom(address _from, uint256 _value) public {
+    function upgradeFrom(address _from, uint256 _value) external {
         require(
             msg.sender == address(oldToken),
             "Call not permitted, UpgradableToken only"
