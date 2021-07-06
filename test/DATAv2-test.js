@@ -46,10 +46,11 @@ describe("DATAv2", () => {
 
 
         before = await recipient3.txCount()
+
         //if callback returns true or false, shouldnt revert
         await token.transferAndCall(recipient3.address, parseEther("1"), errData)
-        //no callback should revert transferAndCall
         await token.transferAndCall(recipient3.address, parseEther("1"), "0x")
+
         after = await recipient3.txCount()
         expect(after).to.equal(before.add(2))
     

@@ -17,7 +17,7 @@ contract MockRecipientReturnBool {
         txCount += 1;
         // return false if passed "err"
         bool retval = keccak256(_data) != keccak256("err");
-        console.log("reval", retval);
+        console.log("retval", retval);
         return retval;
     }
 }
