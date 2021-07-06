@@ -6,5 +6,6 @@ interface IERC677Receiver {
         address _sender,
         uint256 _value,
         bytes calldata _data
-    ) external;
+    ) external; 
+    //returns (bool success);
 }

@@ -1,4 +1,5 @@
 const { parseEther } = require("@ethersproject/units")
+const { formatBytes32String, toUtf8Bytes } = require("@ethersproject/strings")
 const { id } = require("@ethersproject/hash")
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
@@ -11,18 +12,47 @@ describe("DATAv2", () => {
         const recipient = await MockRecipient.deploy()
         await recipient.deployed()
 
+        const MockRecipientNotERC677Receiver = await ethers.getContractFactory("MockRecipientNotERC677Receiver")
+        const recipient2 = await MockRecipientNotERC677Receiver.deploy()
+        await recipient2.deployed()
+
+        const MockRecipientReturnBool = await ethers.getContractFactory("MockRecipientReturnBool")
+        const recipient3 = await MockRecipientReturnBool.deploy()
+        await recipient3.deployed()
+        
+
         const DATAv2 = await ethers.getContractFactory("DATAv2")
         const token = await DATAv2.deploy()
         await token.deployed()
 
         await expect(token.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(token, "RoleGranted")
-        await expect(token.connect(minter).mint(signer.address, parseEther("1"))).to.emit(token, "Transfer(address,address,uint256)")
+        await expect(token.connect(minter).mint(signer.address, parseEther("10"))).to.emit(token, "Transfer(address,address,uint256)")        
 
-        const before = await recipient.txCount()
+        //"err" as bytes
+        const errData = "0x657272"
+        //revert in callback should revert transferAndCall
+        await expect(token.transferAndCall(recipient.address, parseEther("1"), errData)).to.be.reverted
+        //no callback should revert transferAndCall
+        await expect(token.transferAndCall(recipient2.address, parseEther("1"), "0x")).to.be.reverted
+ 
+        //call to contract that implements ERC677Receiver reverts if onTokensReceived = false
+        //await expect().to.be.reverted
+
+        //call to contract that implements ERC677Receiver calls callback
+        let before = await recipient.txCount()
         await token.transferAndCall(recipient.address, parseEther("1"), "0x6c6f6c")
-        const after = await recipient.txCount()
-
+        let after = await recipient.txCount()
         expect(after).to.equal(before.add(1))
+
+
+        before = await recipient3.txCount()
+        //if callback returns true or false, shouldnt revert
+        await token.transferAndCall(recipient3.address, parseEther("1"), errData)
+        //no callback should revert transferAndCall
+        await token.transferAndCall(recipient3.address, parseEther("1"), "0x")
+        after = await recipient3.txCount()
+        expect(after).to.equal(before.add(2))
+    
     })
 
     it("transferAndCall just does normal transfer for non-contract accounts", async () => {
