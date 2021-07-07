@@ -1,8 +1,10 @@
 const { parseEther } = require("@ethersproject/units")
-const { formatBytes32String, toUtf8Bytes } = require("@ethersproject/strings")
 const { id } = require("@ethersproject/hash")
 const { expect } = require("chai")
 const { ethers } = require("hardhat")
+
+// "err" as bytes, induces a simulated error in MockRecipient.sol and MockRecipientReturnBool.sol
+const errData = "0x657272"
 
 describe("DATAv2", () => {
     it("transferAndCall triggers ERC677 callback", async () => {
@@ -13,47 +15,39 @@ describe("DATAv2", () => {
         await recipient.deployed()
 
         const MockRecipientNotERC677Receiver = await ethers.getContractFactory("MockRecipientNotERC677Receiver")
-        const recipient2 = await MockRecipientNotERC677Receiver.deploy()
-        await recipient2.deployed()
+        const nonReceiverRecipient = await MockRecipientNotERC677Receiver.deploy()
+        await nonReceiverRecipient.deployed()
 
         const MockRecipientReturnBool = await ethers.getContractFactory("MockRecipientReturnBool")
-        const recipient3 = await MockRecipientReturnBool.deploy()
-        await recipient3.deployed()
-        
+        const returnBoolRecipient = await MockRecipientReturnBool.deploy()
+        await returnBoolRecipient.deployed()
 
         const DATAv2 = await ethers.getContractFactory("DATAv2")
         const token = await DATAv2.deploy()
         await token.deployed()
 
         await expect(token.grantRole(id("MINTER_ROLE"), minter.address)).to.emit(token, "RoleGranted")
-        await expect(token.connect(minter).mint(signer.address, parseEther("10"))).to.emit(token, "Transfer(address,address,uint256)")        
+        await expect(token.connect(minter).mint(signer.address, parseEther("10"))).to.emit(token, "Transfer(address,address,uint256)")
 
-        //"err" as bytes
-        const errData = "0x657272"
-        //revert in callback should revert transferAndCall
+        // revert in callback => should revert transferAndCall
         await expect(token.transferAndCall(recipient.address, parseEther("1"), errData)).to.be.reverted
-        //no callback should revert transferAndCall
-        await expect(token.transferAndCall(recipient2.address, parseEther("1"), "0x")).to.be.reverted
- 
-        //call to contract that implements ERC677Receiver reverts if onTokensReceived = false
-        //await expect().to.be.reverted
 
-        //call to contract that implements ERC677Receiver calls callback
-        let before = await recipient.txCount()
+        // no callback => should revert transferAndCall
+        await expect(token.transferAndCall(nonReceiverRecipient.address, parseEther("1"), "0x")).to.be.reverted
+
+        // contract that implements ERC677Receiver executes the callback
+        const txsBefore = await recipient.txCount()
         await token.transferAndCall(recipient.address, parseEther("1"), "0x6c6f6c")
-        let after = await recipient.txCount()
-        expect(after).to.equal(before.add(1))
+        const txsAfter = await recipient.txCount()
 
+        // callback returns true or false but doesn't revert => should NOT revert
+        const txsBeforeBool = await returnBoolRecipient.txCount()
+        await token.transferAndCall(returnBoolRecipient.address, parseEther("1"), errData)
+        await token.transferAndCall(returnBoolRecipient.address, parseEther("1"), "0x")
+        const txsAfterBool = await returnBoolRecipient.txCount()
 
-        before = await recipient3.txCount()
-
-        //if callback returns true or false, shouldnt revert
-        await token.transferAndCall(recipient3.address, parseEther("1"), errData)
-        await token.transferAndCall(recipient3.address, parseEther("1"), "0x")
-
-        after = await recipient3.txCount()
-        expect(after).to.equal(before.add(2))
-    
+        expect(txsAfter).to.equal(txsBefore.add(1))
+        expect(txsAfterBool).to.equal(txsBeforeBool.add(2))
     })
 
     it("transferAndCall just does normal transfer for non-contract accounts", async () => {
