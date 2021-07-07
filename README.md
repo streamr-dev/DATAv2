@@ -25,6 +25,17 @@ Some of the following features are inherited from [OpenZeppelin contracts](https
 | Minting           | mint                  | contracts/DATAv2.sol                                              |
 | Burning           | burn, burnFrom        | @openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol  |
 
+## Minting
+
+DATAv2 has an admin role (controlled by Streamr) that can add and remove minters, who can mint tokens tokens at will. The admin and minters will be contracts that are not controlled by a single wallet.
+
+The whole old DATA supply is minted as part of migration, and new tokens may be minted later as decided by the community process in the form of [Streamr Improvement Proposals](https://snapshot.org/#/streamr.eth), see e.g. [SIP-6](https://snapshot.org/#/streamr.eth/proposal/QmU383LMPAHdzMevcxY6UzyL5vkBaNHQhCcp2WbXw5kXS1).
+
+# ERC677 functionality
+
+DATAv2 follows the convention of [LINK](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) and other tokens with regard to the callback function `onTokenTransfer` invoked by `transferAndCall`: DATAv2 does not check the bool return value of `onTokenTransfer`. Instead `onTokenTransfer` should revert if the transfer is to be rejected by the recipient contract. If the recipient is a contract, it must implement `onTokenTransfer` or else `transferAndCall` reverts.
+
+
 ## Migration process
 
 1. We deploy the DATAv2 and DataTokenMigrator contracts
