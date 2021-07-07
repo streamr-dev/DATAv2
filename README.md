@@ -27,7 +27,9 @@ Some of the following features are inherited from [OpenZeppelin contracts](https
 
 ## Minting
 
-DATAv2 has an admin role (controlled by Streamr) that can add and remove minters, who can mint tokens tokens at will. The admin and minters will be contracts that are not controlled by a single wallet. (Minting policy?)
+DATAv2 has an admin role (controlled by Streamr) that can add and remove minters, who can mint tokens tokens at will. The admin and minters will be contracts that are not controlled by a single wallet.
+
+The whole old DATA supply is minted as part of migration, and new tokens may be minted later as decided by the community process in the form of [Streamr Improvement Proposals](https://snapshot.org/#/streamr.eth), see e.g. [SIP-6](https://snapshot.org/#/streamr.eth/proposal/QmU383LMPAHdzMevcxY6UzyL5vkBaNHQhCcp2WbXw5kXS1).
 
 # ERC677 functionality
 
