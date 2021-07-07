@@ -16,7 +16,6 @@ contract MockRecipient is IERC677Receiver {
         console.log("Amount", _value);
         console.log("With data", string(_data));
         txCount += 1;
-        // revert if passed "err"
-        require(keccak256(_data) != keccak256("err"));
+        require(keccak256(_data) != keccak256("err")); // for testing: revert if passed "err"
     }
 }

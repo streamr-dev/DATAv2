@@ -3,6 +3,7 @@ pragma solidity 0.8.6;
 
 import "hardhat/console.sol";
 
+/** ERC677 recipient that returns false for error instead of reverting */
 contract MockRecipientReturnBool {
     uint public txCount;
 
@@ -15,8 +16,7 @@ contract MockRecipientReturnBool {
         console.log("Amount", _value);
         console.log("With data", string(_data));
         txCount += 1;
-        // return false if passed "err"
-        bool retval = keccak256(_data) != keccak256("err");
+        bool retval = keccak256(_data) != keccak256("err"); // for testing: return false if passed "err"
         console.log("retval", retval);
         return retval;
     }
