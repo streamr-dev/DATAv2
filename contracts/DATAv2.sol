@@ -73,6 +73,9 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
         return true;
     }
 
+    // ------------------------------------------------------------------------
+    // allow admin to change the token name and symbol
+
     function setTokenInformation(string calldata newName, string calldata newSymbol) public {
         require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Transaction signer is not an admin");
         _name = newName;
