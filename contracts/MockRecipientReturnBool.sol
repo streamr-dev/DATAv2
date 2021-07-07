@@ -3,7 +3,10 @@ pragma solidity 0.8.6;
 
 import "hardhat/console.sol";
 
-/** ERC677 recipient that returns false for error instead of reverting */
+/**
+ * ERC677 recipient that returns false for error instead of reverting
+ * The return value gets ignored, and transfer proceeds succesfully. This is by design.
+ */
 contract MockRecipientReturnBool {
     uint public txCount;
 
