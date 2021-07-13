@@ -2,6 +2,7 @@
 
 require("@nomiclabs/hardhat-waffle")
 require("solidity-coverage")
+require("hardhat-gas-reporter");
 
 //require("hardhat-erc1820") // this was for ERC777 token study, required for ERC777 tokens
 
