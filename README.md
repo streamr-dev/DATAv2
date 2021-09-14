@@ -2,11 +2,11 @@
 
 ## List of files
 
-| File                           | Description |
-|--------------------------------|-------------|
-|contracts/CrowdsaleToken.sol    | [The current (or "old") DATA token](https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract) |
-|contracts/DATAv2.sol            | The new DATA token |
-|contracts/DataTokenMigrator.sol | Migrator contract that acts as UpgradeAgent for the old token |
+| File                           | Description | Mainnet |
+|--------------------------------|-------------|---------|
+|contracts/CrowdsaleToken.sol    | The current (or "old") DATA token | [0x0cf0...23](https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract)
+|contracts/DATAv2.sol            | The new DATA token | [0x8f6...b76](https://etherscan.io/address/0x8f693ca8d21b157107184d29d398a8d082b38b76#readContract)
+|contracts/DataTokenMigrator.sol | Migrator contract that acts as UpgradeAgent for the old token | [0xc7...c16c](https://etherscan.io/address/0xc7aaf6c62e86a36395d8108fe95d5f758794c16c#readContract)
 |contracts/IERC677.sol           | Interface of ERC677 as defined in [the LINK token](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) |
 |contracts/IERC677Receiver.sol   | Interface of ERC677Receiver also defined in [the LINK token](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) |
 |contracts/MockRecipient.sol     | IERC677Receiver implementation for the purpose of testing |
