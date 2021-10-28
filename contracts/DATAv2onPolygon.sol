@@ -24,7 +24,7 @@ contract DATAv2onPolygon is DATAv2 {
      * Equal amount of tokens got locked in RootChainManager on the mainnet side
      */
     function deposit(address user, bytes calldata depositData) external {
-        require(msg.sender == bridgeAddress, "error_onlyBridge");
+        require(_msgSender() == bridgeAddress, "error_onlyBridge");
         uint256 amount = abi.decode(depositData, (uint256));
         _mint(address(this), amount);
         transferAndCall(user, amount, depositData);
@@ -34,6 +34,6 @@ contract DATAv2onPolygon is DATAv2 {
      * When returning to mainnet, it's enough to simply burn the tokens on the Polygon side
      */
     function withdraw(uint256 amount) external {
-        _burn(msg.sender, amount);
+        _burn(_msgSender(), amount);
     }
 }
