@@ -26,7 +26,9 @@ contract DATAv2onPolygon is DATAv2 {
     function deposit(address user, bytes calldata depositData) external {
         require(_msgSender() == bridgeAddress, "error_onlyBridge");
         uint256 amount = abi.decode(depositData, (uint256));
-        _mint(address(this), amount);
+
+        // emits two Transfer events: 0x0 -> bridgeAddress -> user
+        _mint(bridgeAddress, amount);
         transferAndCall(user, amount, depositData);
     }
 
