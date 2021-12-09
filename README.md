@@ -1,4 +1,7 @@
 # DATAv2 token contract
+[![Continuous Integration](https://github.com/streamr-dev/DATAv2/actions/workflows/ci.yaml/badge.svg)](https://github.com/streamr-dev/DATAv2/actions/workflows/ci.yaml)
+[![Audit by LimeChain](https://img.shields.io/badge/Audit-LimeChain-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_LimeChain.pdf)
+[![Audit by Isentropy](https://img.shields.io/badge/Audit-Isentropy-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_Isentropy.pdf)
 
 ## List of files
 
