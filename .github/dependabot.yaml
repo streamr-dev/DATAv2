@@ -30,9 +30,10 @@ updates:
       timezone: Europe/Helsinki
     commit-message:
       prefix: NPM
+      include: scope
     labels:
-      - node-dependency
+      - build
     reviewers:
       - kare
     assignees:
-      - DaisyDomergue
+      - jtakalai
