@@ -19,8 +19,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node_version:
-          - 16.13.0
         os:
           - ubuntu-20.04
         experimental: [false]
@@ -28,11 +26,11 @@ jobs:
       - uses: actions/checkout@v2.4.0
         with:
           submodules: true
-      - name: Node ${{ matrix.node_version }} - x64 on ${{ matrix.os }}
-        uses: actions/setup-node@v2.4.1
+      - name: Node 16.13.0 - x64 on ${{ matrix.os }}
+        uses: actions/setup-node@v2.5.1
         with:
-          node-version: ${{ matrix.node_version }}
-      - uses: actions/cache@v2.1.7
+          node-version-file: '.nvmrc'
+      - uses: actions/cache@v2.1.6
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
