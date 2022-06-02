@@ -66,3 +66,16 @@ Explanations of the origins and intents of all code found in DATAv2.sol:
 | 16...46 | Adapted from @openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol to implement the minting feature. The AccessControl.sol is a bit of a can of worms when it comes to state-space: the "role admin" can set up any constellation of roles and grant those roles and their administration to anyone; its implementation is quite elegant though, so it didn't feel very significantly worse than a "brute" `mapping (address => bool) isMinter` type of implementation, especially since it's all library code. Added isMinter convenience function. |
 | 48...74 | Adapted from LINK token to implement the ERC-677 token transfer hook. Recipient smart contracts can now react to DATAv2 token transfer which makes approve+transferFrom two-transaction flow avoidable if not entirely redundant. Decided to go for the simply ERC-677 instead of the ERC-777 because of some misfeatures on ERC-777 (defaultOperators, higher plain transfer gas price) as well as uncertain adoption at this stage. |
 | 76...103 | Allow the admin to change token symbol and name just in case, e.g. to support token rebranding, and graceful end-of-life after the possible next migration |
+
+## Dependencies
+
+* [`@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/token/ERC20/extensions/draft-ERC20Permit.sol)
+  * Allows a smart contract to spend tokens using a signature from the token holder
+  * For usage, see [`draft-ERC20Permit.test.js`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/test/token/ERC20/extensions/draft-ERC20Permit.test.js) in `openzeppelin-contracts`
+* [`@openzeppelin/contracts/access/AccessControl.sol`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/access/AccessControl.sol)
+  * Role-based access control (RBAC) where each role has another role as role-admin that can grant it
+  * DATAv2 has a _minter_ role as well as the _default_ role that manages it.
+  * [Tests also in the openzeppelin-contracts repo](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/test/access/AccessControl.behavior.js)
+* [`@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/token/ERC20/extensions/ERC20Burnable.sol)
+  * Unlocks the simple burning functionality in the OpenZeppelin ERC20.sol
+  * Emits transfer to zero address: [`emit Transfer(account, address(0), amount);`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/token/ERC20/ERC20.sol#L264)
