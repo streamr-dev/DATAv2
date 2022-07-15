@@ -36,7 +36,7 @@
     "mocha": "^8.3.2",
     "prettier": "^2.2.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
-    "solidity-coverage": "^0.7.16",
+    "solidity-coverage": "^0.7.21",
     "typechain": "^4.0.1"
   }
 }
