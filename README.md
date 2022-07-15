@@ -3,6 +3,39 @@
 [![Audit by LimeChain](https://img.shields.io/badge/Audit-LimeChain-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_LimeChain.pdf)
 [![Audit by Isentropy](https://img.shields.io/badge/Audit-Isentropy-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_Isentropy.pdf)
 
+## NPM package contents
+
+JS/TypeScript utilities to get a nicely typed DATAv2 instance. Here's a sample code for plain node.js:
+```javascript
+const { JsonRpcProvider } = require("@ethersproject/providers")
+const { formatEther, parseEther } = require("@ethersproject/units")
+const { Wallet } = require("@ethersproject/wallet")
+const { deployToken } = require("@streamr/data-v2")
+
+const key = process.env.PRIVATE_KEY
+const provider = new JsonRpcProvider(process.env.ETHEREUM_URL)
+const wallet = new Wallet(key, provider)
+
+async function main() {
+    const token = await deployToken(wallet)
+    console.log("Before: %s", formatEther(await token.balanceOf(wallet.address)))
+    await (await token.grantRole(await token.MINTER_ROLE(), wallet.address)).wait()
+    await (await token.mint(wallet.address, parseEther("10"))).wait()
+    console.log("After: %s", formatEther(await token.balanceOf(wallet.address)))
+}
+main().catch(console.error)
+```
+And here's another sample code for TypeScript, run with ts-node:
+```typescript
+import { JsonRpcProvider } from "@ethersproject/providers"
+import { getTokenAt } from "@streamr/data-v2"
+import type { DATAv2 } from "@streamr/data-v2"
+
+const provider: JsonRpcProvider = new JsonRpcProvider(process.env.ETHEREUM_URL)
+const token: DATAv2 = await getTokenAt(process.env.TOKEN_ADDRESS, provider)
+console.log("Symbol:", await token.symbol())
+```
+
 ## List of files
 
 | File                           | Description | Deployed |

@@ -1,30 +1,42 @@
 {
-  "name": "DATAv2",
-  "version": "1.0.0",
+  "name": "@streamr/data-v2",
+  "version": "1.0.1",
   "description": "The second iteration of the DATA token",
+  "files": [
+    "contracts/DATAv2.sol",
+    "artifacts/contracts/DATAv2.sol/DATAv2.json",
+    "typechain/DATAv2.d.ts",
+    "index.*"
+  ],
   "scripts": {
     "lint": "eslint test",
     "test": "hardhat test",
     "build": "hardhat compile",
-    "cov": "hardhat coverage"
+    "cov": "hardhat coverage",
+    "prepublish": "npm run build"
   },
   "author": "Streamr Network AG",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.0.0"
+    "@openzeppelin/contracts": "^4.0.0",
+    "@ethersproject/abstract-signer": "5.6.0",
+    "@ethersproject/contracts": "5.6.0",
+    "@ethersproject/providers": "5.6.5"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@typechain/ethers-v5": "^6.0.0",
     "chai": "^4.3.4",
     "eslint": "^7.27.0",
     "ethereum-waffle": "^3.3.0",
-    "ethers": "^5.1.0",
     "hardhat": "^2.1.2",
     "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-typechain": "^0.3.5",
     "mocha": "^8.3.2",
     "prettier": "^2.2.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
-    "solidity-coverage": "^0.7.16"
+    "solidity-coverage": "^0.7.16",
+    "typechain": "^4.0.1"
   }
 }

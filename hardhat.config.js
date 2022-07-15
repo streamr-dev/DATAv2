@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle")
 require("solidity-coverage")
 require("hardhat-gas-reporter")
+require("hardhat-typechain")
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -24,5 +25,9 @@ module.exports = {
                 version: "0.4.11"
             }
         ]
+    },
+    typechain: {
+        outDir: "typechain",
+        target: "ethers-v5"
     }
 }
