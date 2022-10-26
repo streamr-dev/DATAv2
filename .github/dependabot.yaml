@@ -17,8 +17,6 @@ updates:
       include: scope
     labels:
       - ci
-    reviewers:
-      - kare
     assignees:
       - DaisyDomergue
   - package-ecosystem: npm
@@ -33,7 +31,5 @@ updates:
       include: scope
     labels:
       - build
-    reviewers:
-      - kare
     assignees:
       - jtakalai
