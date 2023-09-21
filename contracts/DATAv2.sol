@@ -60,7 +60,7 @@ contract DATAv2 is ERC20Permit, ERC20Burnable, AccessControl, IERC677 {
         bytes calldata _data
     ) public override returns (bool success) {
         super.transfer(_to, _value);
-        emit Transfer(_msgSender(), _to, _value, _data);
+        // emit Transfer(_msgSender(), _to, _value, _data);
 
         uint256 recipientCodeSize;
         assembly {

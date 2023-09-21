@@ -12,10 +12,12 @@ interface IERC677 is IERC20 {
         bytes calldata data
     ) external returns (bool success);
 
-    event Transfer(
-        address indexed from,
-        address indexed to,
-        uint value,
-        bytes data
-    );
+    // commented out this to generate an ABI that doesn't have the "duplicate event", to avoid ethers5 outputting the annoying
+    // `Duplicate definition of Transfer (Transfer(address,address,uint256,bytes), Transfer(address,address,uint256))`
+    // event Transfer(
+    //     address indexed from,
+    //     address indexed to,
+    //     uint value,
+    //     bytes data
+    // );
 }

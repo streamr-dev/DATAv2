@@ -35,7 +35,8 @@ describe("DATAv2onPolygon", () => {
         expect((await token.balanceOf(user.address)).toString()).to.equal("0")
         const amountWei = parseEther("1")
         const amountBytes = hexZeroPad(amountWei, 32)
-        await expect(token.connect(bridge).deposit(user.address, amountBytes)).to.emit(token, "Transfer(address,address,uint256,bytes)")
+        // await expect(token.connect(bridge).deposit(user.address, amountBytes)).to.emit(token, "Transfer(address,address,uint256,bytes)")
+        await (await token.connect(bridge).deposit(user.address, amountBytes)).wait()
         expect((await token.balanceOf(user.address)).toString()).to.equal(amountWei.toString())
 
         await expect(token.connect(user).withdraw(parseEther("1"))).to.emit(token, "Transfer(address,address,uint256)")
