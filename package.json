@@ -1,6 +1,6 @@
 {
   "name": "@streamr/data-v2",
-  "version": "1.0.1",
+  "version": "1.0.1-quiet",
   "description": "The second iteration of the DATA token",
   "files": [
     "contracts/DATAv2.sol",
