@@ -3,6 +3,10 @@
 [![Audit by LimeChain](https://img.shields.io/badge/Audit-LimeChain-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_LimeChain.pdf)
 [![Audit by Isentropy](https://img.shields.io/badge/Audit-Isentropy-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_Isentropy.pdf)
 
+## Security notice
+
+Don't try to burn this token by sending it to `address(0)` or `0x0000000000000000000000000000000000000000`. Due to OpenZeppelin [not implementing](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/extensions/ERC20Permit.sol#L53) the security measure recommended in the [relevant EIP](https://eips.ethereum.org/EIPS/eip-2612), those tokens could be trivially recovered by anyone. If you want your tokens to benefit all DATA holders, you may consider donating them to the [Streamr Data Fund](https://streamr.network/grants/) instead ;)
+
 ## NPM package contents
 
 JS/TypeScript utilities to get a nicely typed DATAv2 instance. Here's a sample code for plain node.js:
@@ -104,7 +108,7 @@ Explanations of the origins and intents of all code found in DATAv2.sol:
 
 * [`@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/token/ERC20/extensions/draft-ERC20Permit.sol)
   * Allows a smart contract to spend tokens using a signature from the token holder
-  * For usage, see [`draft-ERC20Permit.test.js`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/test/token/ERC20/extensions/draft-ERC20Permit.test.js) in `openzeppelin-contracts`
+  * For usage, see [`ERC20Permit.test.js`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/test/token/ERC20/extensions/ERC20Permit.test.js) in `openzeppelin-contracts`
 * [`@openzeppelin/contracts/access/AccessControl.sol`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/access/AccessControl.sol)
   * Role-based access control (RBAC) where each role has another role as role-admin that can grant it
   * DATAv2 has a _minter_ role as well as the _default_ role that manages it.
