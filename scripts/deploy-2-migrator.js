@@ -19,7 +19,7 @@ async function main() {
     const migrator = await DataTokenMigrator.deploy(oldTokenAddress, newTokenAddress)
     console.log("Follow deployment: https://etherscan.io/tx/%s", migrator.deployTransaction.hash)
 
-    await migrator.deployed()
+    await migrator.waitForDeployment()
 
     console.log("DataTokenMigrator deployed to:", migrator.address)
 }

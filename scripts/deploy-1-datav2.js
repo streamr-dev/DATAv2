@@ -16,7 +16,7 @@ async function main() {
     const token = await DATAv2.deploy()
     console.log("Follow deployment: https://etherscan.io/tx/%s", token.deployTransaction.hash)
 
-    await token.deployed()
+    await token.waitForDeployment()
 
     console.log("DATAv2 deployed to:", token.address)
 }

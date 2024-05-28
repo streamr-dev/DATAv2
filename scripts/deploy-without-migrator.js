@@ -33,7 +33,7 @@ async function main() {
     // const token = await DATAv2.deploy("0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa")  // Matic's Polygon version of the token
     console.log("Follow deployment: %s/%s", explorerUrl, token.deployTransaction.hash)
 
-    await token.deployed()
+    await token.waitForDeployment()
     console.log("DATAv2 deployed to:", token.address)
 
     const tx1 = await token.grantRole(id("MINTER_ROLE"), adminAddress)

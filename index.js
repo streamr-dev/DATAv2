@@ -54,7 +54,7 @@ function deployToken(signer) {
                     return [4 /*yield*/, factory.deploy()];
                 case 1:
                     contract = _a.sent();
-                    return [2 /*return*/, contract.deployed()];
+                    return [2 /*return*/, contract.waitForDeployment()];
             }
         });
     });
