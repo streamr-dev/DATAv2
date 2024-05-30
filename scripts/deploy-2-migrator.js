@@ -17,11 +17,11 @@ async function main() {
 
     const DataTokenMigrator = new ContractFactory(DataTokenMigratorJson.abi, DataTokenMigratorJson.bytecode, deployer)
     const migrator = await DataTokenMigrator.deploy(oldTokenAddress, newTokenAddress)
-    console.log("Follow deployment: https://etherscan.io/tx/%s", migrator.deployTransaction.hash)
+    console.log("Follow deployment: https://etherscan.io/tx/%s", migrator.deploymentTransaction().hash)
 
     await migrator.waitForDeployment()
 
-    console.log("DataTokenMigrator deployed to:", migrator.address)
+    console.log("DataTokenMigrator deployed to:", await migrator.getAddress())
 }
 
 // We recommend this pattern to be able to use async/await everywhere
