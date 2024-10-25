@@ -13,7 +13,7 @@
     "clean": "rm -rf cache artifacts coverage typechain index.js index.d.ts",
     "test": "hardhat test",
     "build": "hardhat compile && tsc -p tsconfig.build.json",
-    "cov": "hardhat coverage"
+    "coverage": "hardhat coverage"
   },
   "author": "Streamr Network AG",
   "license": "MIT",
@@ -24,18 +24,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
-    "@nomicfoundation/hardhat-ethers": "^3.0.6",
-    "@nomicfoundation/hardhat-verify": "2.0.11",
-    "@typechain/hardhat": "^9.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "chai": "^4.3.4",
     "eslint": "^9.13.0",
     "hardhat": "^2.22.4",
     "hardhat-gas-reporter": "^1.0.4",
     "mocha": "^8.3.2",
     "prettier": "^2.2.1",
-    "prettier-plugin-solidity": "^1.0.0-beta.19",
-    "solidity-coverage": "^0.7.16",
+    "prettier-plugin-solidity": "^1.4.1",
     "typechain": "^8.3.2"
   }
 }

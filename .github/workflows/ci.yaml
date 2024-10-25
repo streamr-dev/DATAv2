@@ -42,4 +42,4 @@ jobs:
           npm run lint
           npm run build
           npm run test
-          npm run cov
+          npm run coverage
