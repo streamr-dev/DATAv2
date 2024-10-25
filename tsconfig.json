@@ -13,7 +13,7 @@
         "resolveJsonModule": true,
         "outDir": "dist"
     },
-    "include": ["./scripts", "./test", "./typechain", "test-contracts", "./src", "test/.eslintrc.js"],
+    "include": ["./scripts", "./test", "./typechain", "./src"],
     "files": [
       "./hardhat.config.ts"
     ]

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // PEAQ chain
-const providerUrl = "https://peaq.api.onfinality.io/public"
-const explorerUrl = "https://peaq.subscan.io"
+// const providerUrl = "https://peaq.api.onfinality.io/public"
+// const explorerUrl = "https://peaq.subscan.io"
 
 // Binance Smart Chain
 // const providerUrl = "https://bsc-dataseed.binance.org/"

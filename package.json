@@ -9,7 +9,7 @@
     "index.*"
   ],
   "scripts": {
-    "lint": "eslint test",
+    "lint": "eslint",
     "clean": "rm -rf cache artifacts coverage typechain",
     "test": "hardhat test",
     "build": "hardhat compile && tsc -p tsconfig.build.json",
@@ -23,12 +23,13 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.13.0",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
     "@nomicfoundation/hardhat-verify": "2.0.11",
     "@typechain/hardhat": "^9.1.0",
     "chai": "^4.3.4",
-    "eslint": "^8.57.0",
+    "eslint": "^9.13.0",
     "hardhat": "^2.22.4",
     "hardhat-gas-reporter": "^1.0.4",
     "mocha": "^8.3.2",

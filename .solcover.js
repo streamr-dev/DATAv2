@@ -1,3 +1,3 @@
 module.exports = {
-    skipFiles: ['CrowdsaleToken.sol']
+    skipFiles: ["CrowdsaleToken.sol"]
 };
