@@ -1,22 +1,39 @@
-import { Signer } from "@ethersproject/abstract-signer";
-import { Provider } from "@ethersproject/providers";
-import type { DATAv2 } from "./typechain/DATAv2";
+import { Provider, Signer } from "ethers";
+import type { DATAv2 } from "./typechain/contracts/DATAv2";
 export declare const abi: ({
+    inputs: never[];
+    stateMutability: string;
     type: string;
+    anonymous?: undefined;
+    name?: undefined;
+    outputs?: undefined;
+} | {
+    anonymous: boolean;
     inputs: {
-        indexed?: boolean; // events
+        indexed: boolean;
         internalType: string;
         name: string;
         type: string;
     }[];
-    name?: string; // constructor doesn't have name
-    stateMutability?: string;
-    anonymous?: boolean; // events
-    outputs?: {
+    name: string;
+    type: string;
+    stateMutability?: undefined;
+    outputs?: undefined;
+} | {
+    inputs: {
         internalType: string;
         name: string;
         type: string;
     }[];
+    name: string;
+    outputs: {
+        internalType: string;
+        name: string;
+        type: string;
+    }[];
+    stateMutability: string;
+    type: string;
+    anonymous?: undefined;
 })[], bytecode: string;
 export type { DATAv2 };
 export declare function getTokenAt(address: string, signerOrProvider: Provider | Signer): DATAv2;

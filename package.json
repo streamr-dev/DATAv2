@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "lint": "eslint",
-    "clean": "rm -rf cache artifacts coverage typechain",
+    "clean": "rm -rf cache artifacts coverage typechain index.js index.d.ts",
     "test": "hardhat test",
     "build": "hardhat compile && tsc -p tsconfig.build.json",
     "cov": "hardhat coverage"

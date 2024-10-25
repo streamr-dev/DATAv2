@@ -11,8 +11,7 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "declaration": true,
-        "outDir": "dist"
+        "declaration": true
     },
     "include": ["./index.ts"]
 }
