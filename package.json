@@ -25,6 +25,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-verify": "2.0.11",
     "@typechain/hardhat": "^9.1.0",
     "chai": "^4.3.4",
     "eslint": "^8.57.0",

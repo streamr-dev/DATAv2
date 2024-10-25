@@ -1,0 +1,53 @@
+$ ./scripts/2024-10-24-deploy-iotex-testnet.sh         [20:20:54]
++ '[' -z <redacted> ']'
++ export PROVIDER=https://babel-api.testnet.iotex.io
++ PROVIDER=https://babel-api.testnet.iotex.io
++ export EXPLORER=https://testnet.iotexscan.io
++ EXPLORER=https://testnet.iotexscan.io
++ export OUTPUT_FILE=iotex-testnet-address.txt
++ OUTPUT_FILE=iotex-testnet-address.txt
++ ./scripts/deploy-without-migrator.js
+Deploying contracts from 0x41e36D4fFb5B443B20f55bcFf27c68fF086Fe06f
+Connected to network at https://babel-api.testnet.iotex.io: {"name":"unknown","chainId":"4690"}
+Follow deployment: https://testnet.iotexscan.io/tx/0x13c362b06e5a14c8826beb448c5d13527b17ec5d3517d3fa123b7cf164c2092c
+DATAv2 deployed to: 0x5ABD469031d2B5f939808565EAB8562d7Cbaa939
+Follow grant minter role: https://testnet.iotexscan.io/tx/0x9bcc8c2a79aad3ca9d94fc91e86caf6ab2c6f4abf1f66aa14513cc7d4cc4a747
+Follow grant admin role: https://testnet.iotexscan.io/tx/0xd204ed0533514ddcb07d42d2520728b6918296fcaf540cf2b485a44f36323588
+++ cat iotex-testnet-address.txt
++ npx hardhat verify --network iotexTestnet 0x5ABD469031d2B5f939808565EAB8562d7Cbaa939
+[INFO] Sourcify Verification Skipped: Sourcify verification is currently disabled. To enable it, add the following entry to your Hardhat configuration:
+
+sourcify: {
+  enabled: true
+}
+
+Or set 'enabled' to false to hide this message.
+
+For more information, visit https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify#verifying-on-sourcify
+hardhat-verify found one or more errors during the verification process:
+
+Etherscan:
+The address 0x5ABD469031d2B5f939808565EAB8562d7Cbaa939 has no bytecode. Is the contract deployed to this network?
+The selected network is iotexTestnet.
+
+
++ echo 'Retrying in 10 seconds...'
+Retrying in 10 seconds...
++ sleep 10
+++ cat iotex-testnet-address.txt
++ npx hardhat verify --network iotexTestnet 0x5ABD469031d2B5f939808565EAB8562d7Cbaa939
+[INFO] Sourcify Verification Skipped: Sourcify verification is currently disabled. To enable it, add the following entry to your Hardhat configuration:
+
+sourcify: {
+  enabled: true
+}
+
+Or set 'enabled' to false to hide this message.
+
+For more information, visit https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify#verifying-on-sourcify
+Successfully submitted source code for contract
+contracts/DATAv2.sol:DATAv2 at 0x5ABD469031d2B5f939808565EAB8562d7Cbaa939
+for verification on the block explorer. Waiting for verification result...
+
+Successfully verified contract DATAv2 on the block explorer.
+https://testnet.iotexscan.io/address/0x5ABD469031d2B5f939808565EAB8562d7Cbaa939#code

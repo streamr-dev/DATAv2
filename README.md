@@ -3,6 +3,17 @@
 [![Audit by LimeChain](https://img.shields.io/badge/Audit-LimeChain-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_LimeChain.pdf)
 [![Audit by Isentropy](https://img.shields.io/badge/Audit-Isentropy-green)](https://streamr-public.s3.amazonaws.com/DATAv2_audit_Isentropy.pdf)
 
+## Deployments
+
+| Chain | Address |
+|-------|---------|
+| Ethereum Mainnet | [0x8f693ca8d21b157107184d29d398a8d082b38b76](https://etherscan.io/address/0x8f693ca8d21b157107184d29d398a8d082b38b76#readContract) |
+| Binance Smart Chain | [0x0864c156b3c5f69824564dec60c629ae6401bf2a](https://bscscan.com/address/0x0864c156b3c5f69824564dec60c629ae6401bf2a#readContract) |
+| Gnosis (formerly xDAI) | [0x256eb8a51f382650B2A1e946b8811953640ee47D](https://gnosis.blockscout.com/address/0x256eb8a51f382650B2A1e946b8811953640ee47D) |
+| Polygon | [0x3a9A81d576d83FF21f26f325066054540720fC34](https://polygonscan.com/address/0x3a9A81d576d83FF21f26f325066054540720fC34#code) |
+| Polygon Amoy testnet | [0xf5e28a2E7BbedbE97c3782b17b102410E10d90f1](https://amoy.polygonscan.com/address/0xf5e28a2E7BbedbE97c3782b17b102410E10d90f1#code) |
+| IoTeX testnet | [0x5ABD469031d2B5f939808565EAB8562d7Cbaa939](https://testnet.iotexscan.io/address/0x5ABD469031d2B5f939808565EAB8562d7Cbaa939) |
+
 ## NPM package contents
 
 JS/TypeScript utilities to get a nicely typed DATAv2 instance. Here's a sample code for plain node.js:
@@ -39,10 +50,10 @@ console.log("Symbol:", await token.symbol())
 ## List of files
 
 | File                           | Description | Deployed |
-|--------------------------------|-------------|---------|
-|contracts/CrowdsaleToken.sol    | The current (or "old") DATA token | ETH [0x0cf0...23](https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract)
-|contracts/DATAv2.sol            | The new DATA token | ETH&nbsp;[0x8f6...b76](https://etherscan.io/address/0x8f693ca8d21b157107184d29d398a8d082b38b76#readContract) BSC&nbsp;[0x0864...2a](https://bscscan.com/address/0x0864c156b3c5f69824564dec60c629ae6401bf2a#readContract) xDAI&nbsp;[0x256...47D](https://blockscout.com/poa/xdai/address/0x256eb8a51f382650B2A1e946b8811953640ee47D)
-|contracts/DataTokenMigrator.sol | Migrator contract that acts as UpgradeAgent for the old token | ETH [0xc7...c16c](https://etherscan.io/address/0xc7aaf6c62e86a36395d8108fe95d5f758794c16c#readContract)
+|--------------------------------|-------------|----------|
+|contracts/CrowdsaleToken.sol    | The current (or "old") DATA token | ETH [0x0cf0...23](https://etherscan.io/address/0x0cf0ee63788a0849fe5297f3407f701e122cc023#readContract) |
+|contracts/DATAv2.sol            | The new DATA token | ETH [0x8f6...b76](https://etherscan.io/address/0x8f693ca8d21b157107184d29d398a8d082b38b76#readContract) (see above) |
+|contracts/DataTokenMigrator.sol | Migrator contract that acts as UpgradeAgent for the old token | ETH [0xc7...c16c](https://etherscan.io/address/0xc7aaf6c62e86a36395d8108fe95d5f758794c16c#readContract) |
 |contracts/IERC677.sol           | Interface of ERC677 as defined in [the LINK token](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) |
 |contracts/IERC677Receiver.sol   | Interface of ERC677Receiver also defined in [the LINK token](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) |
 |contracts/MockRecipient.sol     | IERC677Receiver implementation for the purpose of testing |
