@@ -1,0 +1,51 @@
++ declare -p KEY
++ echo 'Using deployer private key from environment variable KEY'
+Using deployer private key from environment variable KEY
++ export PROVIDER=https://babel-api.mainnet.iotex.one
++ PROVIDER=https://babel-api.mainnet.iotex.one
++ export EXPLORER=https://iotexscan.io
++ EXPLORER=https://iotexscan.io
++ export OUTPUT_FILE=iotex-address.txt
++ OUTPUT_FILE=iotex-address.txt
++ ./scripts/deploy-without-migrator.js
+Deploying contracts from 0x72ea90e2Fe101090fc44156cae3141527AE9F429
+Connected to network at https://babel-api.mainnet.iotex.one: {"name":"unknown","chainId":"4689"}
+Follow deployment: https://iotexscan.io/tx/0x371e71b0713113ad9e6188a0a0912a31f442b567304e2c9b43e4068108b61df2
+DATAv2 deployed to: 0x871a20C72d636A8C987e762616Ab047e1B52653e
+Follow grant minter role: https://iotexscan.io/tx/0x10c9a18a44fd7d5994689723a0b20b5787904b3b222e237e75b2e26c6248102c
+Follow grant admin role: https://iotexscan.io/tx/0xa53fd8b82141e135c11c139175914d431d8fd315d18082ab330f9684d5ad90cf
+++ cat iotex-address.txt
++ npx hardhat verify --network iotex 0x871a20C72d636A8C987e762616Ab047e1B52653e
+[INFO] Sourcify Verification Skipped: Sourcify verification is currently disabled. To enable it, add the following entry to your Hardhat configuration:
+
+sourcify: {
+  enabled: true
+}
+
+Or set 'enabled' to false to hide this message.
+
+For more information, visit https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify#verifying-on-sourcify
+hardhat-verify found one or more errors during the verification process:
+
+Etherscan:
+The address 0x871a20C72d636A8C987e762616Ab047e1B52653e has no bytecode. Is the contract deployed to this network?
+The selected network is iotex.
+
+
++ echo 'Retrying in 10 seconds...'
+Retrying in 10 seconds...
++ sleep 10
+++ cat iotex-address.txt
++ npx hardhat verify --network iotex 0x871a20C72d636A8C987e762616Ab047e1B52653e
+[INFO] Sourcify Verification Skipped: Sourcify verification is currently disabled. To enable it, add the following entry to your Hardhat configuration:
+
+sourcify: {
+  enabled: true
+}
+
+Or set 'enabled' to false to hide this message.
+
+For more information, visit https://hardhat.org/hardhat-runner/plugins/nomicfoundation-hardhat-verify#verifying-on-sourcify
+
+Successfully verified contract DATAv2 on the block explorer.
+https://iotexscan.io/address/0x871a20C72d636A8C987e762616Ab047e1B52653e#code
