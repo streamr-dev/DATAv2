@@ -21,17 +21,20 @@ contract CrosschainERC677 is ERC20Burnable, IERC677 {
         _;
     }
 
+    ERC20Burnable public immutable legacyToken;
     ERC20 public coToken;
     address public minter;
     uint8 private decimals_;
 
     constructor(
+        ERC20Burnable _legacyToken,
         ERC20 _coToken,
         address _minter,
         string memory _name,
         string memory _symbol,
         uint8 _decimals
     ) ERC20(_name, _symbol) {
+        legacyToken = _legacyToken;
         coToken = _coToken;
         minter = _minter;
         decimals_  = _decimals;
@@ -69,6 +72,11 @@ contract CrosschainERC677 is ERC20Burnable, IERC677 {
         require(_amount != 0, "amount is 0");
         _burn(msg.sender, _amount);
         coToken.safeTransfer(_to, _amount);
+    }
+
+    function exchange(uint256 _amount) public {
+        require(legacyToken.burnFrom(msg.sender, _amount), "burn failed");
+        _mint(msg.sender, _amount);
     }
 
     function mint(address _to, uint256 _amount) public onlyMinter returns (bool) {
