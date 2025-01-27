@@ -1,5 +1,5 @@
 module.exports = [{
-    ignores: ["dist/**/*.js", "typechain/**/*.js", "index.js"], // generated files
+    ignores: ["dist/**/*.js", "typechain/**/*.js", "index.js", "coverage/**/*"], // generated files
     languageOptions: {
         sourceType: "commonjs",
     },
