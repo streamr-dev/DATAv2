@@ -75,7 +75,7 @@ contract CrosschainERC677 is ERC20Burnable, IERC677 {
     }
 
     function exchange(uint256 _amount) public {
-        require(legacyToken.burnFrom(msg.sender, _amount), "burn failed");
+        legacyToken.burnFrom(msg.sender, _amount);
         _mint(msg.sender, _amount);
     }
 
