@@ -26,7 +26,7 @@ describe("CrosschainERC677", () => {
 
         // (ERC20 _coToken, address _minter, string memory _name, string memory _symbol, uint8 _decimals)
         const CrosschainERC677 = await ethers.getContractFactory("CrosschainERC677")
-        const token = await CrosschainERC677.deploy(ZeroAddress, minter.address, "TestToken", "TEST", 18)
+        const token = await CrosschainERC677.deploy(ZeroAddress, ZeroAddress, minter.address, "TestToken", "TEST", 18)
         await token.waitForDeployment()
 
         await expect(token.connect(minter).mint(signer.address, parseEther("10"))).to.emit(token, "Transfer(address,address,uint256)")
