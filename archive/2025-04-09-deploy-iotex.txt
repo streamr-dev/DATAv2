@@ -1,0 +1,17 @@
+$ ./scripts/2025-04-09-deploy-iotex-custom-token.sh           [13:11:53]
++ declare -p KEY
++ echo 'Using deployer private key from environment variable KEY'
+Using deployer private key from environment variable KEY
++ export PROVIDER=https://babel-api.mainnet.iotex.one
++ PROVIDER=https://babel-api.mainnet.iotex.one
++ export EXPLORER=https://iotexscan.io
++ EXPLORER=https://iotexscan.io
++ export OUTPUT_FILE=iotex-address.txt
++ OUTPUT_FILE=iotex-address.txt
++ export MINTER_ADDRESS=0xAe1Ba4036610cF18A2Ca6ba0f43DB957ffA21024
++ MINTER_ADDRESS=0xAe1Ba4036610cF18A2Ca6ba0f43DB957ffA21024
++ ./scripts/deploy-iotex.js
+Deploying contracts from 0xAe1Ba4036610cF18A2Ca6ba0f43DB957ffA21024
+Connected to network at https://babel-api.mainnet.iotex.one: {"name":"unknown","chainId":"4689"}
+Follow deployment: https://iotexscan.io/tx/0x712d0c9d400cf4e2a1b5e85f4e0028f100405e2148f76e847b52bd4b0a0afb8f
+DATAv2 deployed to: 0xD94be6fd546d4cE502CB1E870A58330Cc8869e9B

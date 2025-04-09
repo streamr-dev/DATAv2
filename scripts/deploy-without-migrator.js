@@ -21,10 +21,11 @@ const DATAv2Json = require("../artifacts/contracts/DATAv2.sol/DATAv2.json")
 const fs = require("fs")
 const { ContractFactory, Wallet, JsonRpcProvider, id } = require("ethers")
 
+const { waitForTx } = require("./waitForTx")
+
 const {
     KEY,
     PROVIDER,
-    EXPLORER,
     OUTPUT_FILE,
 } = process.env
 if (!KEY) { throw new Error("Please provide env variable KEY") }
@@ -57,21 +58,6 @@ async function main() {
 
     const tx2 = await token.grantRole("0x0000000000000000000000000000000000000000000000000000000000000000", adminAddress)
     waitForTx("grant admin role", tx2)
-}
-
-/**
- * Print pretty logging for transactions
- * @param {string} txDescription
- * @param {import("ethers").ContractTransaction} tx
- */
-async function waitForTx(txDescription, tx) {
-    if (EXPLORER) {
-        log("Follow %s: %s/tx/%s", txDescription, EXPLORER, tx.hash)
-    } else {
-        log("Waiting for %s, hash: %s", txDescription, tx.hash)
-    }
-    const tr = await tx.wait()
-    log("Transaction receipt: ", tr)
 }
 
 main()
