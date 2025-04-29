@@ -2,7 +2,7 @@
 pragma solidity 0.8.6;
 
 // import "hardhat/console.sol";
-import "./IERC677Receiver.sol";
+import "../IERC677Receiver.sol";
 
 contract MockRecipient is IERC677Receiver {
     uint public txCount;

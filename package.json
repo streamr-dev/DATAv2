@@ -1,9 +1,10 @@
 {
   "name": "@streamr/data-v2",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The second iteration of the DATA token",
   "files": [
-    "contracts/DATAv2.sol",
+    "flattened/*.sol",
+    "contracts/*.sol",
     "artifacts/contracts/DATAv2.sol/DATAv2.json",
     "typechain/contracts/DATAv2.d.ts",
     "index.*"
@@ -12,13 +13,14 @@
     "lint": "eslint",
     "clean": "rm -rf cache artifacts coverage typechain index.js index.d.ts",
     "test": "hardhat test",
-    "build": "hardhat compile && tsc -p tsconfig.build.json",
+    "flatten": "hardhat flatten contracts/DATAv2.sol > DATAv2",
+    "build": "hardhat compile && ./scripts/flatten_datav2_sol.sh && tsc -p tsconfig.build.json",
     "coverage": "hardhat coverage"
   },
   "author": "Streamr Network AG",
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.0.0",
+    "@openzeppelin/contracts": "4.0.0",
     "ethers": "^6.1.0",
     "typescript": "^5.4.5"
   },

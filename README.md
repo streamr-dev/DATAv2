@@ -14,7 +14,7 @@
 | Polygon Amoy testnet | [0xf5e28a2E7BbedbE97c3782b17b102410E10d90f1](https://amoy.polygonscan.com/address/0xf5e28a2E7BbedbE97c3782b17b102410E10d90f1#code) |
 | IoTeX testnet | [0x5ABD469031d2B5f939808565EAB8562d7Cbaa939](https://testnet.iotexscan.io/address/0x5ABD469031d2B5f939808565EAB8562d7Cbaa939) |
 
-## NPM package contents
+# NPM package contents
 
 JS/TypeScript utilities to get a nicely typed DATAv2 instance. Here's a sample code for plain node.js:
 ```javascript
@@ -62,7 +62,16 @@ console.log("Symbol:", await token.symbol())
 |contracts/DATAv2onPolygon.sol `*` | DATAv2 deployed on MATIC/Polygon chain, extended slightly for bridging | MATIC&nbsp;[0x3a9...34](https://polygonscan.com/address/0x3a9A81d576d83FF21f26f325066054540720fC34#code) |
 
 `*` _added after the audit_
-## DATAv2 features
+
+## NPM package changelog
+
+1.0.0 deployed to Polygon
+1.0.1 export abi, types, and bytecode; helper functions `getTokenAt` and `deployToken`
+1.0.2 ethers v5 -> v6
+1.0.3 peaq and iotex
+1.0.4 included .sol dependencies and flattened .sol file
+
+# DATAv2 features
 
 Some of the following features are inherited from [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/v4.0.0/contracts):
 
@@ -80,10 +89,9 @@ DATAv2 has an admin role (controlled by Streamr) that can add and remove minters
 
 The whole old DATA supply is minted as part of migration, and new tokens may be minted later as decided by the community process in the form of [Streamr Improvement Proposals](https://snapshot.org/#/streamr.eth), see e.g. [SIP-6](https://snapshot.org/#/streamr.eth/proposal/QmU383LMPAHdzMevcxY6UzyL5vkBaNHQhCcp2WbXw5kXS1).
 
-# ERC677 functionality
+## ERC677 functionality
 
 DATAv2 follows the convention of [LINK](https://etherscan.io/address/0x514910771af9ca656af840dff83e8264ecf986ca#code) and other tokens with regard to the callback function `onTokenTransfer` invoked by `transferAndCall`: DATAv2 does not check the bool return value of `onTokenTransfer`. Instead `onTokenTransfer` should revert if the transfer is to be rejected by the recipient contract. If the recipient is a contract, it must implement `onTokenTransfer` or else `transferAndCall` reverts.
-
 
 ## Migration process
 
